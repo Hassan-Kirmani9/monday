@@ -30,4 +30,20 @@ body {
   :root {
     --radius: 0.5rem;
   }
+
+}
+
+
+/* styles.css or your CSS module file */
+.custom-checkbox .chakra-checkbox__control {
+  background-color: #00854D; /* Green background */
+  border-color: #00854D; /* Green border */
+}
+
+.custom-checkbox .chakra-checkbox__control[data-checked="true"] {
+  background-color: #004d40; /* Darker green when checked */
+}
+
+.custom-checkbox .chakra-checkbox__control[data-indeterminate="true"] {
+  background-color: #004d40; /* Darker green for indeterminate state */
 }

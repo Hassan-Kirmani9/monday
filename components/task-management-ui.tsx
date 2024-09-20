@@ -17,7 +17,8 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
-import { Bell, ChevronDown, Filter, Grid, HelpCircle, LayoutGrid, MessageSquare, Plus, Search, Settings, Users, X, Check, Edit2, Calendar, ArrowUpDown, Menu } from "lucide-react"
+import { Bell, ChevronDown, Filter, Grid, HelpCircle, LayoutGrid, MessageSquare, Plus, Search, Settings, Users, X, Check, Edit2, Calendar, ArrowUpDown, Menu, ArrowDown } from "lucide-react"
+import TaskTable from './TaskTable'
 
 const initialTasks = [
   { id: 1, name: 'Implement user authentication', owner: 'John D.', status: 'In Progress', sprint: 'Sprint 1', dueDate: '2023-07-15', priority: 'High' },
@@ -33,16 +34,23 @@ const priorities = ['Low', 'Medium', 'High']
 export default function TaskManagementUI() {
   const [tasks, setTasks] = useState(initialTasks)
   const [newTaskName, setNewTaskName] = useState('')
+  const [sprintCount, setSprintCount] = useState(0); // to track clicks on "New Sprint"
+
   const [selectedStatus, setSelectedStatus] = useState('')
   const [selectedOwner, setSelectedOwner] = useState('')
   const [editingTaskId, setEditingTaskId] = useState<number|null>(null)
   const [editingTaskName, setEditingTaskName] = useState('')
   const [newTaskPriority, setNewTaskPriority] = useState('')
+  const [showTaskTable, setShowTaskTable] = useState(false);
   const [newTaskDueDate, setNewTaskDueDate] = useState('')
   const [sortColumn, setSortColumn] = useState(null)
+  const [taskTables, setTaskTables] = useState([]); // Array to store TaskTable components
+
   const [sortDirection, setSortDirection] = useState('asc')
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const editInputRef = useRef(null)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
 
   useEffect(() => {
     if (editingTaskId !== null && editInputRef.current) {
@@ -101,6 +109,15 @@ export default function TaskManagementUI() {
   const cancelEdit = () => {
     setEditingTaskId(null)
   }
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prevState) => !prevState);
+  };
+
+  
+  const handleNewSprintClick = () => {
+    setTaskTables((prevTables) => [...prevTables, <TaskTable key={prevTables.length} />]); // Add a new TaskTable
+  };
 
   const handleSort = (column) => {
     if (sortColumn === column) {
@@ -228,116 +245,62 @@ export default function TaskManagementUI() {
               <TabsTrigger value="add">+</TabsTrigger>
             </TabsList>
           </Tabs>
-  
-          <div className="my-4 flex flex-wrap items-center space-x-2 space-y-2 md:space-y-0">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="default">
-                  New task <Plus className="ml-2 h-4 w-4" />
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Create New Task</DialogTitle>
-                  <DialogDescription>
-                    Add a new task to your board. Fill in the details below.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="name" className="text-right">
-                      Name
-                    </Label>
-                    <Input
-                      id="name"
-                      value={newTaskName}
-                      onChange={(e) => setNewTaskName(e.target.value)}
-                      className="col-span-3"
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="owner" className="text-right">
-                      Owner
-                    </Label>
-                    <Input
-                      id="owner"
-                      value={selectedOwner}
-                      onChange={(e) => setSelectedOwner(e.target.value)}
-                      className="col-span-3"
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="status" className="text-right">
-                      Status
-                    </Label>
-                    <select
-                      id="status"
-                      value={selectedStatus}
-                      onChange={(e) => setSelectedStatus(e.target.value)}
-                      className="col-span-3 bg-gray-700 rounded p-2"
-                    >
-                      <option value="">Select status</option>
-                      {statuses.map((status) => (
-                        <option key={status} value={status}>
-                          {status}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="priority" className="text-right">
-                      Priority
-                    </Label>
-                    <select
-                      id="priority"
-                      value={newTaskPriority}
-                      onChange={(e) => setNewTaskPriority(e.target.value)}
-                      className="col-span-3 bg-gray-700 rounded p-2"
-                    >
-                      <option value="">Select priority</option>
-                      {priorities.map((priority) => (
-                        <option key={priority} value={priority}>
-                          {priority}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="dueDate" className="text-right">
-                      Due Date
-                    </Label>
-                    <Input
-                      id="dueDate"
-                      type="date"
-                      value={newTaskDueDate}
-                      onChange={(e) => setNewTaskDueDate(e.target.value)}
-                      className="col-span-3"
-                    />
-                  </div>
-                </div>
-                <DialogTrigger asChild className='bg-slate-50'>
-                  <Button onClick={() => addTask('Sprint 1')}>Add Task</Button>
-                </DialogTrigger>
-              </DialogContent>
-            </Dialog>
-            <Input className="w-full md:w-64" placeholder="Search" />
-            <Button variant="ghost" size="sm">
-              Person
-            </Button>
-            <Button variant="ghost" size="sm">
-              <Filter className="mr-2 h-4 w-4" /> Filter
-            </Button>
-            <Button variant="ghost" size="sm">
-              Sort
-            </Button>
-            <Button variant="ghost" size="sm">
-              Hide / 2
-            </Button>
-            <Button variant="ghost" size="sm">
-              Group by / 1
-            </Button>
+      
+          <div className="my-4 flex rounded-[0.25rem]   flex-wrap items-center space-x-2 space-y-2 md:space-y-0 bg-[#00854D] text-white w-[7rem]  ">
+          <Dialog>
+    <DialogTrigger asChild>
+    <Button className="bg-[#00854D] bg-opacity-100 pr-2 pl-3 hover:bg-[#3f5149] hover:bg-opacity-40 border-r-[1px] rounded-br-[0rem] rounded-tr-[0rem]">
+    New Task
+      </Button>
+    </DialogTrigger>
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Create New Task</DialogTitle>
+        <DialogDescription>
+          Add a new task to your board. Fill in the details below.
+        </DialogDescription>
+      </DialogHeader>
+      <div className="grid gap-4 py-4">
+        {/* Task Form */}
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="name" className="text-right">Name</Label>
+          <Input
+            id="name"
+            value={newTaskName}
+            onChange={(e) => setNewTaskName(e.target.value)}
+            className="col-span-3"
+          />
+        </div>
+        {/* Other Fields */}
+        {/* Add Task Button */}
+        <DialogTrigger asChild>
+          <Button onClick={() => addTask('Sprint 1')}>Add Task</Button>
+        </DialogTrigger>
+      </div>
+    </DialogContent>
+  </Dialog>
+
+  {/* Dropdown Button */}
+  <div className="relative hover ho
+  ver:bg-[#00854D]/40">
+        <Button onClick={toggleDropdown} className="pr-0 pl-0 bg-[#00854D] ">
+          <ArrowDown className="h-4 w-4" />
+        </Button>
+        {/* Dropdown Menu */}
+        {isDropdownOpen && (
+          <div className="absolute mt-2 z-50 w-48 bg-white border border-gray-300 rounded shadow-lg">
+            <ul>
+              <li
+                className="px-4 py-2 hover:bg-gray-100 text-black cursor-pointer"
+                onClick={handleNewSprintClick} // Handle click for New Sprint
+              >
+                New Sprint
+              </li>
+            </ul>
           </div>
-  
+        )}
+      </div>
+  </div>
           <div className="bg-white p-4 rounded-lg mb-4 overflow-x-auto">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-2">
               <h2 className="text-xl font-semibold mb-2 md:mb-0">Sprint 1</h2>
@@ -351,42 +314,11 @@ export default function TaskManagementUI() {
                 </Button>
               </div>
             </div>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[300px]">
-                    <Button variant="ghost" onClick={() => handleSort('name')}>
-                      Task {sortColumn === 'name' && <ArrowUpDown className="ml-2 h-4 w-4" />}
-                    </Button>
-                  </TableHead>
-                  <TableHead>
-                    <Button variant="ghost" onClick={() => handleSort('dueDate')}>
-                      Due Date {sortColumn === 'dueDate' && <ArrowUpDown className="ml-2 h-4 w-4" />}
-                    </Button>
-                  </TableHead>
-                  <TableHead>
-                    <Button variant="ghost" onClick={() => handleSort('status')}>
-                      Status {sortColumn === 'status' && <ArrowUpDown className="ml-2 h-4 w-4" />}
-                    </Button>
-                  </TableHead>
-                  <TableHead>
-                    <Button variant="ghost" onClick={() => handleSort('priority')}>
-                      Priority {sortColumn === 'priority' && <ArrowUpDown className="ml-2 h-4 w-4" />}
-                    </Button>
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {tasks.map((task, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{task.name}</TableCell>
-                    <TableCell>{task.dueDate}</TableCell>
-                    <TableCell>{task.status}</TableCell>
-                    <TableCell>{task.priority}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            {taskTables.map((taskTable, index) => (
+          <div key={index} className="mt-4">
+            {taskTable} {/* Render each TaskTable */}
+          </div>
+        ))}
           </div>
         </main>
       </div>
