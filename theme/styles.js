@@ -1,8 +1,8 @@
 const styles = {
   global: {
     "html, body": {
-      backgroundColor: "gray.900",
-      color: "whiteAlpha.800",
+      backgroundColor: "whiteAlpha.900",
+      color: "whiteAlpha.900",
     },
     svg: {
       cursor: "pointer",

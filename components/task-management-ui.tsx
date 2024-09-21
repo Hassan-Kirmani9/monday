@@ -8,6 +8,7 @@ import { IoDiamondOutline } from "react-icons/io5";
 
 import logo from '../app/images/bigger-desktop_close_monday_dev_logo1.png'; // Adjust the path according to your folder structure
 import { CgMenuGridO } from "react-icons/cg";
+import { DateRange } from "react-date-range";
 
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -31,10 +32,26 @@ const initialTasks = [
 const statuses = ['Backlog', 'Ready to start', 'In Progress', 'Done']
 const priorities = ['Low', 'Medium', 'High']
 
+
+
+
 export default function TaskManagementUI() {
-  const [tasks, setTasks] = useState(initialTasks)
+  // const [tasks, setTasks] = useState(initialTasks)
   const [newTaskName, setNewTaskName] = useState('')
   const [sprintCount, setSprintCount] = useState(0); // to track clicks on "New Sprint"
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+  const [sprintName, setSprintName] = useState(""); // Input field for Name
+  const [dateRange, setDateRange] = useState({
+    startDate: new Date(),  // Initialize to current date or null
+    endDate: new Date(),
+    key: 'selection',
+  });
+  const [sprintTimeline, setSprintTimeline] = useState("");  // Add sprintTimeline state
+
+  const [sprintGoals, setSprintGoals] = useState(""); // Input field for Sprint Goals
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false); // Control Date Picker visibility
+  const [formattedTimeline, setFormattedTimeline] = useState(""); // To display selected dates as a string in input field
+  const [taskInput, setTaskInput] = useState("");
 
   const [selectedStatus, setSelectedStatus] = useState('')
   const [selectedOwner, setSelectedOwner] = useState('')
@@ -50,33 +67,34 @@ export default function TaskManagementUI() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const editInputRef = useRef(null)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [taskName, setTaskName] = useState(""); // Declare state for task name
 
-
+  useEffect(() => {
+    const savedTablesData = localStorage.getItem("taskTablesData");
+    if (savedTablesData) {
+      const parsedData = JSON.parse(savedTablesData);
+      setTaskTables(parsedData);  // Load the saved data into state
+    }
+  }, []);
+  
+  
   useEffect(() => {
     if (editingTaskId !== null && editInputRef.current) {
       editInputRef.current.focus()
     }
   }, [editingTaskId])
-
-  const addTask = (sprint) => {
-    if (newTaskName) {
+  const addTask = () => {
+    if (taskName.trim()) {
       const newTask = {
-        id: tasks.length + 1,
-        name: newTaskName,
-        owner: selectedOwner || 'Unassigned',
-        status: selectedStatus || 'Backlog',
-        sprint: sprint,
-        dueDate: newTaskDueDate || '2023-12-31',
-        priority: newTaskPriority || 'Medium',
-      }
-      setTasks([...tasks, newTask])
-      setNewTaskName('')
-      setSelectedStatus('')
-      setSelectedOwner('')
-      setNewTaskPriority('')
-      setNewTaskDueDate('')
+        task: taskName,
+        status: { id: 1, name: "On Deck" }, // Default status
+        priority: { id: 1, name: "Medium" }, // Default priority
+        notes: "", // Default notes
+      };
+      setTasks((prevTasks) => [...prevTasks, newTask]);
+      setTaskName(""); // Clear the input
     }
-  }
+  };
 
   const updateTaskStatus = (taskId, newStatus) => {
     setTasks(tasks.map(task => 
@@ -113,14 +131,83 @@ export default function TaskManagementUI() {
   const toggleDropdown = () => {
     setIsDropdownOpen((prevState) => !prevState);
   };
-
+ 
+  const handleAddTask = () => {
+    if (taskName.trim()) {
+      const newTask = {
+        task: taskName,
+        status: { id: 1, name: "On Deck" }, // Default status
+        priority: { id: 1, name: "Medium" }, // Default priority
+        notes: "", // Default notes
+      };
+      setTasks((prevTasks) => [...prevTasks, newTask]);
+      setTaskName(""); // Clear the input field
+    }
+  };
   
+  const handleNewTaskClick = () => {
+    const newTask = { /* Define your new task properties */ };
+    handleAddTask(newTask);
+  };
   const handleNewSprintClick = () => {
-    setTaskTables((prevTables) => [...prevTables, <TaskTable key={prevTables.length} />]); // Add a new TaskTable
+    setIsModalOpen(true); 
+
+  };
+  const handleTimelineClick = () => {
+    setIsDatePickerOpen(true); // Open the date picker when the input is clicked
+  };
+  const handleCancelDatePicker = () => {
+    setIsDatePickerOpen(false); // Close the date picker
+  };
+  const handleDateChange = (ranges) => {
+    const { selection } = ranges;
+    console.log("Date selection:", selection); // Log for debugging
+    setDateRange({
+      startDate: selection.startDate,
+      endDate: selection.endDate,
+      key: 'selection',
+    });
+  };
+  
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+  
+    const formattedDateRange = dateRange && dateRange.startDate && dateRange.endDate
+      ? `${dateRange.startDate.toLocaleDateString()} - ${dateRange.endDate.toLocaleDateString()}`
+      : "No date range selected"; // Fallback if no date is selected
+  
+    // Create an object to store both the sprintName and sprintDate
+    const newTableData = {
+      sprintName,
+      sprintDate: formattedDateRange,
+    };
+  
+    // Add the new table to the state and save it in localStorage
+    const updatedTableData = [...taskTables, newTableData];
+    setTaskTables(updatedTableData); // Update state with the new data
+    localStorage.setItem("taskTablesData", JSON.stringify(updatedTableData)); // Save to localStorage
+  
+    // Close the modal after submission
+    setIsModalOpen(false);
+  
+    // Reset form inputs
+    setSprintName("");
+    setDateRange({ startDate: new Date(), endDate: new Date(), key: 'selection' });
+  };
+  
+  
+  const tasks = [
+    { task: "", status: "", priority: "", notes: "" },
+    { task: "", status: "", priority: "", notes: "" },
+  ];
+  
+
   const handleSort = (column) => {
-    if (sortColumn === column) {
+    if (sort === column) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
     } else {
       setSortColumn(column)
@@ -128,45 +215,14 @@ export default function TaskManagementUI() {
     }
   }
 
-  const sortedTasks = [...tasks].sort((a, b) => {
-    if (!sortColumn) return 0
-    if (a[sortColumn] < b[sortColumn]) return sortDirection === 'asc' ? -1 : 1
-    if (a[sortColumn] > b[sortColumn]) return sortDirection === 'asc' ? 1 : -1
-    return 0
-  })
+  // const sortedTasks = [...tasks].sort((a, b) => {
+  //   if (!sortColumn) return 0
+  //   if (a[sortColumn] < b[sortColumn]) return sortDirection === 'asc' ? -1 : 1
+  //   if (a[sortColumn] > b[sortColumn]) return sortDirection === 'asc' ? 1 : -1
+  //   return 0
+  // })
 
-  const renderTaskName = (task) => {
-    if (editingTaskId === task.id) {
-      return (
-        <div className="flex items-center">
-          <Input
-            ref={editInputRef}
-            value={editingTaskName}
-            onChange={(e) => setEditingTaskName(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') saveEdit()
-              if (e.key === 'Escape') cancelEdit()
-            }}
-            className="mr-2"
-          />
-          <Button variant="ghost" size="sm" onClick={saveEdit}>
-            <Check className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="sm" onClick={cancelEdit}>
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      )
-    }
-    return (
-      <div className="flex items-center">
-        {task.name}
-        <Button variant="ghost" size="sm" onClick={() => startEditing(task.id, task.name)}>
-          <Edit2 className="h-4 w-4 ml-2" />
-        </Button>
-      </div>
-    )
-  }
+
 
   return (
     <div className="flex flex-col h-screen bg-[#e2f0e7] text-black">
@@ -246,45 +302,21 @@ export default function TaskManagementUI() {
             </TabsList>
           </Tabs>
       
-          <div className="my-4 flex rounded-[0.25rem]   flex-wrap items-center space-x-2 space-y-2 md:space-y-0 bg-[#00854D] text-white w-[7rem]  ">
-          <Dialog>
-    <DialogTrigger asChild>
-    <Button className="bg-[#00854D] bg-opacity-100 pr-2 pl-3 hover:bg-[#3f5149] hover:bg-opacity-40 border-r-[1px] rounded-br-[0rem] rounded-tr-[0rem]">
-    New Task
+          <div className="my-4 flex rounded-[0.25rem] hover-bg[#00854D]  flex-wrap items-center space-x-2 space-y-2 md:space-y-0 bg-[#00854D] text-white w-[7rem]  ">
+  
+    <Button
+        className="bg-[#00854D] bg-opacity-100 pr-2 pl-3 hover:bg-[#3f5149] border-r-[1px] rounded-br-[0rem] rounded-tr-[0rem]"
+      >
+        New Task
       </Button>
-    </DialogTrigger>
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>Create New Task</DialogTitle>
-        <DialogDescription>
-          Add a new task to your board. Fill in the details below.
-        </DialogDescription>
-      </DialogHeader>
-      <div className="grid gap-4 py-4">
-        {/* Task Form */}
-        <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="name" className="text-right">Name</Label>
-          <Input
-            id="name"
-            value={newTaskName}
-            onChange={(e) => setNewTaskName(e.target.value)}
-            className="col-span-3"
-          />
-        </div>
-        {/* Other Fields */}
-        {/* Add Task Button */}
-        <DialogTrigger asChild>
-          <Button onClick={() => addTask('Sprint 1')}>Add Task</Button>
-        </DialogTrigger>
-      </div>
-    </DialogContent>
-  </Dialog>
 
+
+
+   
   {/* Dropdown Button */}
-  <div className="relative hover ho
-  ver:bg-[#00854D]/40">
-        <Button onClick={toggleDropdown} className="pr-0 pl-0 bg-[#00854D] ">
-          <ArrowDown className="h-4 w-4" />
+  <div className="relative">
+        <Button onClick={toggleDropdown} className="pr-0 pl-0 bg-[#00854D] hover-bg[#00854D]">
+          <ArrowDown className="h-4 w-4 hover:text-slate-300" />
         </Button>
         {/* Dropdown Menu */}
         {isDropdownOpen && (
@@ -299,26 +331,100 @@ export default function TaskManagementUI() {
             </ul>
           </div>
         )}
+
       </div>
+
   </div>
-          <div className="bg-white p-4 rounded-lg mb-4 overflow-x-auto">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-2">
-              <h2 className="text-xl font-semibold mb-2 md:mb-0">Sprint 1</h2>
-              <div className="flex flex-wrap items-center space-x-2 space-y-2 md:space-y-0">
-                <span>Jan 2, '23 - Jan 15, '23</span>
-                <Button variant="outline" size="sm">
-                  Burndown
-                </Button>
-                <Button variant="outline" size="sm">
-                  Start
-                </Button>
+  {isModalOpen && (
+       <div className="fixed inset-0 z-50 flex items-center justify-center  bg-opacity-50">
+       <div className="bg-white p-6 rounded-lg shadow-lg w-[30rem] ">
+         <h2 className="text-xl font-semibold mb-4">Create New Sprint</h2>
+         <form onSubmit={handleFormSubmit}>
+           {/* Name Input */}
+           <div className="mb-4 flex items-center">
+             <label htmlFor="sprintName" className="block w-[10rem] text-sm font-medium mr-4">
+               Sprint Name
+             </label>
+             <input
+               id="sprintName"
+               type="text"
+               placeholder="Enter sprint name"
+               value={sprintName}
+               onChange={(e) => setSprintName(e.target.value)}
+               className="mt-1 block w-full p-2 bg-white border border-gray-300 rounded"
+               required
+             />
+           </div>
+    
+           {/* Sprint Timeline Input */}
+           <div className="mb-4 relative flex items-center">
+            <label htmlFor="sprintTimeline" className="block text-sm font-medium mb-2 w-[11.5rem]">
+              Sprint Timeline
+            </label>
+            <input
+              id="sprintTimeline"
+              type="text"
+              value={formattedTimeline} // Show selected date range
+              placeholder="Select sprint timeline"
+              onClick={handleTimelineClick} // Show date picker on click
+              readOnly
+              className="mt-1 block w-full p-2 border bg-white border-gray-300 rounded cursor-pointer"
+            />
+             {isDatePickerOpen && (
+              <div style={{ borderEndEndRadius:"4px", borderEndStartRadius:"4px"}} className="absolute top-[-10rem]  bg-white  ml-4 z-50"> {/* Change 8: Adjusted position to display date picker to the right */}
+                <DateRange
+                  editableDateInputs={true}
+                  onChange={handleDateChange}
+                  moveRangeOnFirstSelection={false}
+                  ranges={[dateRange]} // Ensure `dateRange` is passed here correctly
+                  months={2} // Change 9: Display two months in the date picker
+                  direction="horizontal" // Change 10: Display months side by side
+                />
+                <div style={{display:"flex" , gap:"1rem"}}>
+                 <button
+          type="button"
+          className="bg-red-500 text-white p-3 h-11 ml-[3rem] mt-1 text-sm rounded-md"
+          onClick={handleCancelDatePicker}
+        >
+          Cancel
+        </button>
+                 <button type="submit" className='bg-[#3d91ff] text-white p-3 ml-[20rem] mb-4 text-sm rounded-md'>Apply Date Range</button>
+                 </div>
               </div>
-            </div>
-            {taskTables.map((taskTable, index) => (
-          <div key={index} className="mt-4">
-            {taskTable} {/* Render each TaskTable */}
+            )}
           </div>
-        ))}
+     
+         
+           {/* Modal Buttons */}
+           <div className="flex justify-end">
+             <button
+               type="button"
+               onClick={handleCloseModal}
+               className="mr-2 px-4 py-2 bg-gray-300 text-gray-700 rounded"
+             >
+               Cancel
+             </button>
+             <button type="submit" className="px-4 py-2 bg-green-600 text-white rounded">
+               Create Sprint
+             </button>
+           </div>
+         </form>
+       </div>
+     </div>
+     
+      )}
+
+          <div className="bg-white p-4 rounded-lg mb-4 overflow-x-auto">
+           
+            {taskTables.map((tableData, index) => (
+  <TaskTable
+    key={index}
+    data1={tasks}
+    sprintName={tableData.sprintName}  // Pass the sprint name
+    sprintDate={tableData.sprintDate}  // Pass the sprint date
+  />
+))}
+
           </div>
         </main>
       </div>
