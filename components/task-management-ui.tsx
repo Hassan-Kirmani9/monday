@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import Image from 'next/image'
 import { IoDiamondOutline } from "react-icons/io5";
 import { GoHome } from "react-icons/go";
@@ -30,14 +29,8 @@ import { BiSort } from "react-icons/bi";
 import { BiHide } from "react-icons/bi";
 import { BsLayoutTextSidebarReverse } from "react-icons/bs";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-import { Bell, ChevronDown, Filter, Grid, HelpCircle, LayoutGrid, MessageSquare, Plus, Search, Settings, Users, X, Check, Edit2, Calendar, ArrowUpDown, Menu, ArrowDown } from "lucide-react"
+import { Tabs,  TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Bell, HelpCircle,  MessageSquare,  Search,  Users,  Menu, ArrowDown } from "lucide-react"
 import TaskTable from './TaskTable'
 import { IoIosArrowDown } from 'react-icons/io'
 
@@ -104,46 +97,46 @@ export default function TaskManagementUI() {
       editInputRef.current.focus()
     }
   }, [editingTaskId])
-  const addTask = () => {
-    if (taskName.trim()) {
-      const newTask = {
-        task: taskName,
-        status: { id: 1, name: "On Deck" }, // Default status
-        priority: { id: 1, name: "Medium" }, // Default priority
-        notes: "", // Default notes
-      };
-      setTasks((prevTasks) => [...prevTasks, newTask]);
-      setTaskName(""); // Clear the input
-    }
-  };
+  // const addTask = () => {
+  //   if (taskName.trim()) {
+  //     const newTask = {
+  //       task: taskName,
+  //       status: { id: 1, name: "On Deck" }, // Default status
+  //       priority: { id: 1, name: "Medium" }, // Default priority
+  //       notes: "", // Default notes
+  //     };
+  //     setTasks((prevTasks) => [...prevTasks, newTask]);
+  //     setTaskName(""); // Clear the input
+  //   }
+  // };
 
-  const updateTaskStatus = (taskId, newStatus) => {
-    setTasks(tasks.map(task => 
-      task.id === taskId ? { ...task, status: newStatus } : task
-    ))
-  }
+  // const updateTaskStatus = (taskId, newStatus) => {
+  //   setTasks(tasks.map(task => 
+  //     task.id === taskId ? { ...task, status: newStatus } : task
+  //   ))
+  // }
 
-  const updateTaskPriority = (taskId, newPriority) => {
-    setTasks(tasks.map(task => 
-      task.id === taskId ? { ...task, priority: newPriority } : task
-    ))
-  }
+  // const updateTaskPriority = (taskId, newPriority) => {
+  //   setTasks(tasks.map(task => 
+  //     task.id === taskId ? { ...task, priority: newPriority } : task
+  //   ))
+  // }
 
-  const deleteTask = (taskId) => {
-    setTasks(tasks.filter(task => task.id !== taskId))
-  }
+  // const deleteTask = (taskId) => {
+  //   setTasks(tasks.filter(task => task.id !== taskId))
+  // }
 
   const startEditing = (taskId, taskName) => {
     setEditingTaskId(taskId)
     setEditingTaskName(taskName)
   }
 
-  const saveEdit = () => {
-    setTasks(tasks.map(task =>
-      task.id === editingTaskId ? { ...task, name: editingTaskName } : task
-    ))
-    setEditingTaskId(null)
-  }
+  // const saveEdit = () => {
+  //   setTasks(tasks.map(task =>
+  //     task.id === editingTaskId ? { ...task, name: editingTaskName } : task
+  //   ))
+  //   setEditingTaskId(null)
+  // }
 
   const cancelEdit = () => {
     setEditingTaskId(null)
@@ -161,15 +154,15 @@ export default function TaskManagementUI() {
         priority: { id: 1, name: "Medium" }, // Default priority
         notes: "", // Default notes
       };
-      setTasks((prevTasks) => [...prevTasks, newTask]);
+      // setTasks((prevTasks) => [...prevTasks, newTask]);
       setTaskName(""); // Clear the input field
     }
   };
   
-  const handleNewTaskClick = () => {
-    const newTask = { /* Define your new task properties */ };
-    handleAddTask(newTask);
-  };
+  // const handleNewTaskClick = () => {
+  //   const newTask = { /* Define your new task properties */ };
+  //   handleAddTask(newTask);
+  // };
   const handleNewSprintClick = () => {
     setIsModalOpen(true); 
 
@@ -227,14 +220,14 @@ export default function TaskManagementUI() {
   ];
   
 
-  const handleSort = (column) => {
-    if (sort === column) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
-    } else {
-      setSortColumn(column)
-      setSortDirection('asc')
-    }
-  }
+  // const handleSort = (column) => {
+  //   if (sort === column) {
+  //     setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+  //   } else {
+  //     setSortColumn(column)
+  //     setSortDirection('asc')
+  //   }
+  // }
 
   // const sortedTasks = [...tasks].sort((a, b) => {
   //   if (!sortColumn) return 0
@@ -564,7 +557,7 @@ export default function TaskManagementUI() {
             {taskTables.map((tableData, index) => (
   <TaskTable
     key={index}
-    data1={tasks}
+    // data1={tasks}
     sprintName={tableData.sprintName}  // Pass the sprint name
     sprintDate={tableData.sprintDate}  // Pass the sprint date
   />

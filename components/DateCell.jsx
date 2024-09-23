@@ -1,8 +1,8 @@
 import { forwardRef } from "react";
-import { Box, Center, Icon } from "@chakra-ui/react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import CalendarIcon from "./icons/CalendarIcon";
+import { Box, Center, Icon } from "@chakra-ui/react"; // Ensure Chakra UI components are imported
+import DatePicker from "react-datepicker"; // Import DatePicker from react-datepicker
+import "react-datepicker/dist/react-datepicker.css"; // Import CSS for DatePicker
+import CalendarIcon from "./icons/CalendarIcon"; // Adjust the path as necessary
 
 const DateCustomInput = forwardRef(({ value, onClick, clearDate }, ref) => (
   <Center ref={ref} onClick={onClick} cursor="pointer">
@@ -28,6 +28,9 @@ const DateCustomInput = forwardRef(({ value, onClick, clearDate }, ref) => (
   </Center>
 ));
 
+// Set the display name for the component
+DateCustomInput.displayName = 'DateCustomInput';
+
 const DateCell = ({ getValue, row, column, table }) => {
   const date = getValue();
   const { updateData } = table.options.meta;
@@ -45,4 +48,5 @@ const DateCell = ({ getValue, row, column, table }) => {
     />
   );
 };
+
 export default DateCell;

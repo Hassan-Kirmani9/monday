@@ -1,7 +1,7 @@
 import { Input } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-const EditableCell = ({ row, column, table }) => {
+const EditableCell = ({ row, column }) => {
   const initialValue = row.getValue(column.id);
   const [value, setValue] = useState(initialValue);
 

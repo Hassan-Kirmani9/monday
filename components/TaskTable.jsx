@@ -142,7 +142,7 @@ const columns = [
   },
 ];
 
-const TaskTable = ({ sprintName, sprintDate, onAddTask }) => {
+const TaskTable = ({ sprintName, sprintDate }) => {
   const [isTableVisible, setIsTableVisible] = useState(true);
   const [data, setData] = useState(DATA);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -151,10 +151,10 @@ const TaskTable = ({ sprintName, sprintDate, onAddTask }) => {
     setIsTableVisible((prev) => !prev);
   };
 
-  const addTask = (newTask) => {
-    setData((prevData) => [...prevData, newTask]);
-    if (onAddTask) onAddTask(newTask);
-  };
+  // const addTask = (newTask) => {
+  //   setData((prevData) => [...prevData, newTask]);
+  //   if (onAddTask) onAddTask(newTask);
+  // };
 
   const table = useReactTable({
     data,
