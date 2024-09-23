@@ -13,10 +13,10 @@ const PriorityCell = ({ getValue, row, column, table }) => {
       <MenuButton
         h="100%"
         w="100%"
-        textAlign="left"
+        textAlign="center"
         p={1.5}
         bg={color || "transparent"}
-        color="gray.900"
+        color="white"
       >
         {name}
       </MenuButton>

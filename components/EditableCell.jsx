@@ -1,16 +1,14 @@
 import { Input } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-const EditableCell = ({ getValue, row, column, table }) => {
-  const initialValue = getValue();
+const EditableCell = ({ row, column, table }) => {
+  const initialValue = row.getValue(column.id);
   const [value, setValue] = useState(initialValue);
 
-  // When the input is blurred, we'll call our table meta's updateData function
+  // Handle the input blur event
   const onBlur = () => {
-    table.options.meta?.updateData(row.index, column.id, value);
   };
 
-  // If the initialValue is changed external, sync it up with our state
   useEffect(() => {
     setValue(initialValue);
   }, [initialValue]);
@@ -29,4 +27,5 @@ const EditableCell = ({ getValue, row, column, table }) => {
     />
   );
 };
+
 export default EditableCell;

@@ -1,7 +1,8 @@
 const STATUS_ON_DECK = {
   id: 1,
-  name: "On Deck",
+  name: "Ready to start",
   color: "blue.400"
+
 };
 
 const STATUS_IN_PROGRESS = {
@@ -12,7 +13,7 @@ const STATUS_IN_PROGRESS = {
 
 const STATUS_TESTING = {
   id: 3,
-  name: "Testing",
+  name: "Waiting for review",
   color: "orange.400"
 };
 
@@ -32,6 +33,7 @@ export const STATUSES = [
 
 
 const DATA = [
+  {},
   {}
 ];
 

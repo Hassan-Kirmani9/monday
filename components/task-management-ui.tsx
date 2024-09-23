@@ -5,11 +5,30 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Image from 'next/image'
 import { IoDiamondOutline } from "react-icons/io5";
-
+import { GoHome } from "react-icons/go";
+import { SlCalender } from "react-icons/sl";
+import { FaRegStar } from "react-icons/fa";
+import { BsThreeDots } from "react-icons/bs";
+import { TiArrowSortedDown } from "react-icons/ti";
+import { GoBug } from "react-icons/go";
+import { TfiCrown } from "react-icons/tfi";
+import { LuArrowDownRightFromCircle } from "react-icons/lu";
+import { HiOutlineChevronDoubleRight } from "react-icons/hi2";
+import { MdOutlineTask } from "react-icons/md";
+import myteam from "../app/images/myteam.png"
 import logo from '../app/images/bigger-desktop_close_monday_dev_logo1.png'; // Adjust the path according to your folder structure
 import { CgMenuGridO } from "react-icons/cg";
 import { DateRange } from "react-date-range";
+import { GoPlus } from "react-icons/go";
+import { GoSearch } from "react-icons/go";
+import { IoExtensionPuzzleOutline } from "react-icons/io5";
+import { FaUserCircle } from "react-icons/fa";
 
+import { CiFilter } from "react-icons/ci";
+import { LuUserCircle } from "react-icons/lu";
+import { BiSort } from "react-icons/bi";
+import { BiHide } from "react-icons/bi";
+import { BsLayoutTextSidebarReverse } from "react-icons/bs";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -20,6 +39,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Label } from "@/components/ui/label"
 import { Bell, ChevronDown, Filter, Grid, HelpCircle, LayoutGrid, MessageSquare, Plus, Search, Settings, Users, X, Check, Edit2, Calendar, ArrowUpDown, Menu, ArrowDown } from "lucide-react"
 import TaskTable from './TaskTable'
+import { IoIosArrowDown } from 'react-icons/io'
 
 const initialTasks = [
   { id: 1, name: 'Implement user authentication', owner: 'John D.', status: 'In Progress', sprint: 'Sprint 1', dueDate: '2023-07-15', priority: 'High' },
@@ -28,6 +48,7 @@ const initialTasks = [
   { id: 4, name: 'Optimize database queries', owner: 'Sarah L.', status: 'In Progress', sprint: 'Sprint 1', dueDate: '2023-07-18', priority: 'High' },
   { id: 5, name: 'Write API documentation', owner: 'Tom B.', status: 'Backlog', sprint: 'Backlog', dueDate: '2023-08-05', priority: 'Medium' },
 ]
+
 
 const statuses = ['Backlog', 'Ready to start', 'In Progress', 'Done']
 const priorities = ['Low', 'Medium', 'High']
@@ -232,8 +253,8 @@ export default function TaskManagementUI() {
       <CgMenuGridO  className='text-[1.5rem] cursor-pointer'/>
         <Image
           src={logo}
-          width={110}
-          height={110}
+          width={150}
+          height={150}
           alt="Picture of the author"
           className='cursor-pointer'
         />
@@ -241,44 +262,107 @@ export default function TaskManagementUI() {
           <Menu className="h-6 w-6" />
         </Button>
 
-        <Button variant="outline" size="sm" className="hidden md:inline-flex bg-transparent border border-[#00854d] px-[24px] py-[1px] text-[12px] text-[#00854d] hover:bg-[#00854d] hover:text-white">
-        <IoDiamondOutline className='pr-[7px] text-[1.3rem]' />
+        <Button variant="outline" size="sm" className="hidden md:inline-flex bg-transparent border text-[15px] border-[#00854d] px-[24px] py-[1px] text-[#00854d] hover:bg-[#00854d] hover:text-white">
+        <IoDiamondOutline className='pr-[7px] text-[1.5rem]' />
  
         See plans
         </Button>
       </div>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-10">
         <Bell className="h-5 w-5" />
         <MessageSquare className="h-5 w-5" />
         <Users className="h-5 w-5" />
+<div className='border-r-2 border-slate-500 pr-6'>
+        <IoExtensionPuzzleOutline className="h-5 w-5" />
+        </div>
         <Search className="h-5 w-5" />
         <HelpCircle className="h-5 w-5" />
+        <FaUserCircle className="h-9 w-9 relative right-2" />
+        
       </div>
     </header>
   
     <div className="flex flex-1">
       {/* Sidebar */}
-      <div className={`${isSidebarOpen ? 'block' : 'hidden'} md:block md:w-[12rem] bg-gradient-to-b from-white to-transparent p-4 overflow-y-auto rounded-[0.5rem] w-full`}>
+      <div className={`${isSidebarOpen ? 'block' : 'hidden'} overflow-hidden md:block md:w-[12rem] bg-gradient-to-b from-white to-transparent p-4 overflow-y-auto rounded-[0.5rem] w-full`}>
         <nav>
           <ul className="space-y-2">
-            <li className="flex items-center"><LayoutGrid className="mr-2 h-4 w-4" /> Home</li>
-            <li className="flex items-center"><Grid className="mr-2 h-4 w-4" /> My work</li>
-            <li className="flex items-center">⭐ Favorites</li>
-            <li className="font-bold flex items-center"><Users className="mr-2 h-4 w-4" /> My Team</li>
-            <li className="pl-4 text-green-500">Tasks</li>
-            <li className="pl-4">Sprints</li>
-            <li className="pl-4">Epics</li>
-            <li className="pl-4">Bugs Queue</li>
-            <li className="pl-4">Retrospectives</li>
-            <li className="pl-4">Getting Started</li>
+          <li className="flex items-center mt-1" style={{ fontSize: '15px', fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif' }}>
+  <GoHome className="mr-2 h-5 w-5"  /> Home
+</li>
+            <li className="flex items-center " style={{width:"12rem", paddingTop:"4px",paddingBottom:"0.5rem", fontSize: '15px', fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif' }}><SlCalender className="mr-2 h-5 w-5"  /> My work</li>
+            <div style={{ borderBottom: '1px solid #ddd', width: '12rem' , marginLeft:"-1rem"}}></div>
+
+            <li className="flex items-center" style={{ fontSize: '15px', paddingBottom:"0.5rem", width:"12rem" ,fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}} ><FaRegStar className="mr-2 h-5 w-5"  /> Favorites</li>
+            <div style={{ borderBottom: '1px solid #ddd', width: '12rem' , marginLeft:"-1rem", marginTop:"-3px"}}></div>
+
+
+            <li className="pt-1 text-green-500 flex items-center">
+  <Image src={myteam} alt="My Team" width={24} height={24} />
+  <span className="ml-2">Tasks</span>
+  <span className="flex ml-auto items-center">
+    <TiArrowSortedDown className="ml-2 h-5 w-5 text-slate-400" />
+    <BsThreeDots className="ml-2 h-5 w-5 text-slate-400" />
+  </span>
+</li>
+<div className="mt-2 flex items-center">
+  <input
+    type="text"
+    placeholder="Search..."
+    className="w-[7rem] bg-white border border-gray-300 rounded-md p-2"
+  />
+  <div className="ml-2 " style={{border:"1px solid #dddd"  , borderRadius:"2px" , marginRight:"3px"}}>
+    <button className="bg-white  text-black p-2 rounded-md">
+      <GoPlus className="h-5 w-5" />
+    </button>
+  </div>
+</div>
+<li className="pt-1 text-black flex items-center pb-2" style={{fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}}>
+<TiArrowSortedDown className="ml-1 h-5 w-5 text-slate-400" />
+  <span className="ml-2">My Team</span>
+  
+</li>
+
+<li className=" ml-[10px] flex items-center gap-2 pb-3 "style={{fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}} >
+  <HiOutlineChevronDoubleRight className=" h-3 w-3" />
+  Sprints
+</li>
+
+<li className=" ml-[10px] flex items-center gap-2 pb-3 "style={{fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}} >
+  <TfiCrown className=" h-3 w-3" />
+  Epics
+</li>
+<li className=" ml-[10px] flex items-center gap-2 pb-3 "style={{fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}} >
+  <GoBug className=" h-3 w-3" />
+  Bugs Queue
+</li>
+<li className=" ml-[10px] flex items-center gap-2 pb-3 "style={{fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}} >
+  <LuArrowDownRightFromCircle className=" h-3 w-3" />
+  Retrospectives
+</li>
+<li className=" ml-[10px] flex items-center gap-2 pb-3 "style={{fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}} >
+  <MdOutlineTask className=" h-3 w-3" />
+  Getting Started
+</li>
+            
           </ul>
         </nav>
       </div>
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <main className="flex-1 p-4 md:p-6 overflow-auto ml-[1rem] rounded-[0.5rem] bg-white" >
+        <main className="flex-1 p-4 md:p-6 overflow-auto ml-[1rem] rounded-[0.5rem] bg-white"  >
           <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center">
-            <h1 className="text-3xl font-bold mb-4 md:mb-0">Tasks</h1>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+          rel="stylesheet"
+        />
+ <h1
+      className="text-3xl mb-4 md:mb-0"
+      style={{ fontWeight: "500", fontFamily: 'Poppins, sans-serif', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+    >
+      Tasks
+      <IoIosArrowDown  className='text-[20px] mt-2 text-slate-500'/>
+    </h1>
             <div className="flex flex-wrap items-center space-x-2 space-y-2 md:space-y-0">
               <Button variant="outline" size="sm">
                 Integrate
@@ -301,7 +385,8 @@ export default function TaskManagementUI() {
               <TabsTrigger value="add">+</TabsTrigger>
             </TabsList>
           </Tabs>
-      
+      <div className='
+      flex'>
           <div className="my-4 flex rounded-[0.25rem] hover-bg[#00854D]  flex-wrap items-center space-x-2 space-y-2 md:space-y-0 bg-[#00854D] text-white w-[7rem]  ">
   
     <Button
@@ -309,6 +394,8 @@ export default function TaskManagementUI() {
       >
         New Task
       </Button>
+  
+   
 
 
 
@@ -333,6 +420,64 @@ export default function TaskManagementUI() {
         )}
 
       </div>
+
+  </div>
+   <div className="relative rounded-[0.25rem] mr-2 p-2 pl-3 pr-3 top-[1.09rem] h-[40px] right-[-2rem] hover:bg-[#6768791a]">
+
+   <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer'}}>
+  <GoSearch style={{ marginRight: '0.5rem', fontSize: '1.25rem' }} />
+  <span>Search</span>
+</div>
+
+   </div>
+   <div className="relative rounded-[0.25rem] mr-2 p-2 pl-3 pr-3 top-[1.09rem] h-[40px] right-[-2rem] hover:bg-[#6768791a]">
+
+   <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer'}}>
+  <LuUserCircle style={{ marginRight: '0.5rem', fontSize: '1.25rem' }} />
+  <span>Person</span>
+</div>
+
+   </div>
+   <div className="relative rounded-[0.25rem] mr-2 p-2 pl-3 pr-3 top-[1.09rem] h-[40px] right-[-2rem] hover:bg-[#6768791a]">
+
+   <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer'}}>
+  <CiFilter style={{ marginRight: '0.5rem', fontSize: '1.25rem' }} />
+  <span>Filter</span>
+   </div>
+</div>
+   <div className="relative rounded-[0.25rem] mr-2 p-2 pl-3 pr-3 top-[1.09rem] h-[40px] right-[-2rem] hover:bg-[#6768791a]">
+
+   <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer'}}>
+  <BiSort style={{ marginRight: '0.5rem', fontSize: '1.25rem' }} />
+  <span>Sort</span>
+   </div>
+</div>
+   <div className="bg-[#c6e9d5] mr-2 relative rounded-[0.25rem] p-2 pl-3 pr-3 top-[1.09rem] h-[40px] right-[-2rem] hover:bg-[#6768791a]">
+
+   <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer'}}>
+  <BiHide style={{ marginRight: '0.5rem', fontSize: '1.25rem' }} />
+  <span>Hide</span>
+   </div>
+</div>
+   <div className="bg-[#c6e9d5] relative rounded-[0.25rem] p-2 pl-3 pr-3 top-[1.09rem] h-[40px] right-[-2rem] hover:bg-[#6768791a]">
+
+   <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer'}}>
+  <BsLayoutTextSidebarReverse style={{ marginRight: '0.5rem', fontSize: '1.25rem' }} />
+  <span>Group by / 1 </span>
+   </div>
+</div>
+   {/* <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer'}}>
+  <BiSort style={{ marginRight: '0.5rem', fontSize: '1.25rem' }} />
+  <span>Sort</span>
+</div>
+   <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer'}}>
+  <BiHide style={{ marginRight: '0.5rem', fontSize: '1.25rem' }} />
+  <span>Hide</span>
+</div>
+   <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer'}}>
+  <BsLayoutTextSidebarReverse style={{ marginRight: '0.5rem', fontSize: '1.25rem' }} />
+  <span>Group</span>
+</div> */}
 
   </div>
   {isModalOpen && (

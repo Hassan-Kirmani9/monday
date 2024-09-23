@@ -47,3 +47,8 @@ body {
 .custom-checkbox .chakra-checkbox__control[data-indeterminate="true"] {
   background-color: #004d40; /* Darker green for indeterminate state */
 }
+
+[data-nextjs-toast-wrapper] {
+  display: none !important;
+}
+
