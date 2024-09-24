@@ -316,24 +316,30 @@ export default function TaskManagementUI() {
   
 </li>
 
-<li className=" ml-[10px] flex items-center gap-2 pb-3 "style={{fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}} >
+<li className=" ml-[0px] p-3 rounded-md cursor-pointer  hover:bg-slate-200 flex items-center gap-2 pb-2 "style={{fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}} >
   <HiOutlineChevronDoubleRight className=" h-3 w-3" />
   Sprints
 </li>
 
-<li className=" ml-[10px] flex items-center gap-2 pb-3 "style={{fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}} >
+<li className=" ml-[0px] p-3 rounded-md cursor-pointer  hover:bg-slate-200 flex items-center gap-2 pb-2 "style={{fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}} >
   <TfiCrown className=" h-3 w-3" />
   Epics
 </li>
-<li className=" ml-[10px] flex items-center gap-2 pb-3 "style={{fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}} >
+<li className=" ml-[0px] p-3 rounded-md cursor-pointer  hover:bg-slate-200 flex items-center gap-2 pb-2 "style={{fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}} >
   <GoBug className=" h-3 w-3" />
   Bugs Queue
 </li>
-<li className=" ml-[10px] flex items-center gap-2 pb-3 "style={{fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}} >
+<li className=" ml-[0px] p-3 rounded-md cursor-pointer  hover:bg-slate-200 flex items-center gap-2 pb-2 "style={{fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}} >
   <LuArrowDownRightFromCircle className=" h-3 w-3" />
   Retrospectives
 </li>
-<li className=" ml-[10px] flex items-center gap-2 pb-3 "style={{fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}} >
+
+{/* background: #ededed;
+    font-family: Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif;
+    padding: 7px;   
+    border-radius: 8px;
+    marginLeft: "0px", */}
+<li className=" ml-[0px] p-3 rounded-md cursor-pointer  hover:bg-slate-200 flex items-center gap-2 pb-2 "style={{fontFamily: 'Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif'}} >
   <MdOutlineTask className=" h-3 w-3" />
   Getting Started
 </li>
