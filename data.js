@@ -10,6 +10,11 @@ const STATUS_IN_PROGRESS = {
   name: "In Progress",
   color: "yellow.400"
 };
+const STATUS_STOPPED = {
+  id: 5,
+  name: "Stopped",
+  color: "red.400"
+};
 
 const STATUS_TESTING = {
   id: 3,
@@ -28,6 +33,7 @@ export const STATUSES = [
   STATUS_IN_PROGRESS,
   STATUS_TESTING,
   STATUS_DEPLOYED,
+  STATUS_STOPPED
 ];
 
 
